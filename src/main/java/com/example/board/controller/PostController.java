@@ -5,9 +5,7 @@ import com.example.board.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/posts")
@@ -31,6 +29,19 @@ public class PostController {
         model.addAttribute("post", post);
         return "posts/detail";
     }
+
+    @GetMapping("/new")
+    public String newPost(Model model) {
+        model.addAttribute("post", new PostDto());
+        return "posts/form";
+    }
+
+    @PostMapping
+    public String create(@ModelAttribute PostDto postDto) {
+        postRepository.save(postDto);
+        return "redirect:/posts";
+    }
+
 
 
 

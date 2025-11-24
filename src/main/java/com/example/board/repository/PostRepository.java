@@ -44,6 +44,11 @@ public class PostRepository {
         return post;
     }
 
+    public void save(PostDto postDto) {
+        String sql = "INSERT INTO post (title, content) VALUES (?, ?)";
+        jdbcTemplate.update(sql, postDto.getTitle(), postDto.getContent());
+    }
+
 
 
 }
