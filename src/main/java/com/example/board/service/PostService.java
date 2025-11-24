@@ -90,5 +90,8 @@ public class PostService {
         System.out.println("change title");
     }
 
+    public List<Post> searchPosts(String keyword) {
+        return postRepository.findByTitleContaining(keyword);
+    }
 
 }

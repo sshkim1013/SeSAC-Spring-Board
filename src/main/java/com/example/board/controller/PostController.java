@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/posts")
 @RequiredArgsConstructor
@@ -85,5 +87,11 @@ public class PostController {
         return "redirect:/posts";
     }
 
+    @GetMapping("/search")
+    public String search(@RequestParam String keyword, Model model) {
+        List<Post> posts = postService.searchPosts(keyword);
+        model.addAttribute("posts", posts);
+        return "posts/list";
+    }
 
 }
