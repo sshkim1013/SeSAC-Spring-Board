@@ -54,6 +54,11 @@ public class PostRepository {
         jdbcTemplate.update(sql, postDto.getTitle(), postDto.getContent(), id);
     }
 
+    public void delete(Long id) {
+        String sql = "DELETE FROM post WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
 
 
 }
