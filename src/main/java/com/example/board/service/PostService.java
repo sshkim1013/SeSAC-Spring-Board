@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -116,6 +117,14 @@ public class PostService {
             Post post = new Post(i + "번 제목", "게시물 내용 " + i);
             postRepository.save(post);
         }
+    }
+
+    public Page<Post> searchPostsPage(String keyword, Pageable pageable) {
+        return postRepository.findByTitleContaining(keyword, pageable);
+    }
+
+    public Slice<Post> getPostsSlice(Pageable pageable) {
+        return postRepository.findAllBy(pageable);
     }
 
 }
