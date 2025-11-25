@@ -28,7 +28,7 @@ public class PostController {
     @GetMapping
     public String list(
         @PageableDefault(
-            size = 20,
+            size = 10,
             sort = "id",
             direction = Direction.DESC
         ) Pageable pageable,
@@ -36,7 +36,7 @@ public class PostController {
     ) {
 //        model.addAttribute("posts", postService.getAllPosts());
         Page<Post> postPage = postService.getPostsPage(pageable);
-        model.addAttribute("posts", postPage.getContent());
+        model.addAttribute("postPage", postPage);
         return "posts/list";
     }
 
