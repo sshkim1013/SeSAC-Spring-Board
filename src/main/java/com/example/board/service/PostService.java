@@ -25,7 +25,7 @@ public class PostService {
         return postRepository.save(post);
     }
 
-//    @Transactional(readOnly=true)
+    // @Transactional(readOnly=true)
     public Post getPostById(Long id) {
         return postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("post not found"));
@@ -33,9 +33,9 @@ public class PostService {
 
 
     public List<Post> getAllPosts() {
-//        return postRepository.findAll(
-//                Sort.by(Sort.Direction.DESC, "id")
-//        );
+        // return postRepository.findAll(
+        //         Sort.by(Sort.Direction.DESC, "id")
+        // );
         return postRepository.findAllByOrderByIdDesc();
     }
 
@@ -94,8 +94,8 @@ public class PostService {
     }
 
     public List<Post> searchPostsByTitleOrContent(String keyword) {
-//        return postRepository.findByTitleContainingOrContentContaining(keyword, keyword);
-//        return postRepository.searchByKeyword(keyword);
+        // return postRepository.findByTitleContainingOrContentContaining(keyword, keyword);
+        // return postRepository.searchByKeyword(keyword);
         return postRepository.searchByTitleNative(keyword);
     }
 

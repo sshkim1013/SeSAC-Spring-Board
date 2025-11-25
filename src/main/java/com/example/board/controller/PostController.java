@@ -17,12 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/posts")
 @RequiredArgsConstructor
 public class PostController {
-    private final PostService postService;
-//    private final PostRepository postRepository;
 
-//    public PostController(PostRepository postRepository) {
-//        this.postRepository = postRepository;
-//    }
+    private final PostService postService;
 
     @GetMapping
     public String list(
@@ -33,9 +29,9 @@ public class PostController {
         ) Pageable pageable,
         Model model
     ) {
-//        model.addAttribute("posts", postService.getAllPosts());
+        // model.addAttribute("posts", postService.getAllPosts());
         Page<Post> postPage = postService.getPostsPage(pageable);
-//        model.addAttribute("postPage", postPage);
+        // model.addAttribute("postPage", postPage);
 
         int currentPage = postPage.getNumber();
         int totalPages = postPage.getTotalPages();
