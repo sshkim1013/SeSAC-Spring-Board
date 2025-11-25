@@ -3,6 +3,7 @@ package com.example.board.service;
 import com.example.board.entity.Post;
 import com.example.board.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,16 +26,6 @@ public class PostService {
     public Post getPostById(Long id) {
         return postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("post not found"));
-
-        // readOnly = fasle
-        // 1. 엔티티 조회
-        // 2. 스냅샷 저장
-        // 3. 트랜젝션이 끝날 때 비교
-        // 4. 변경이 있으면 update
-
-        // readOnly = true
-        // 1. 엔티티 조회
-
     }
 
 
@@ -103,6 +94,14 @@ public class PostService {
 //        return postRepository.findByTitleContainingOrContentContaining(keyword, keyword);
 //        return postRepository.searchByKeyword(keyword);
         return postRepository.searchByTitleNative(keyword);
+    }
+
+    public List<Post> getRecentPosts() {
+        // return postRepository.findTop3ByOrderByCreatedAtDesc();
+
+        return postRepository.findRecentPosts(PageRequest.of(0, 3));
+
+        // return postRepository.findRecentPostsNative();
     }
 
 }
