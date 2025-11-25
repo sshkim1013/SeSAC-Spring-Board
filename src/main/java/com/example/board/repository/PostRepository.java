@@ -40,6 +40,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     // ORDER BY id DESC
     List<Post> findAllByOrderByIdDesc();
+
+    // 제목 or 내용 으로 검색
+    List<Post> findByTitleContainingOrContentContaining(
+            String titleKeyword, String contentKeyword
+    );
 }
 
 
