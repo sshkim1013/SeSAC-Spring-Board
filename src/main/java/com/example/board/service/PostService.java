@@ -3,7 +3,9 @@ package com.example.board.service;
 import com.example.board.entity.Post;
 import com.example.board.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -104,11 +106,16 @@ public class PostService {
         // return postRepository.findRecentPostsNative();
     }
 
+    public Page<Post> getPostsPage(Pageable pageable) {
+        return postRepository.findAll(pageable);
+    }
+
+    @Transactional
+    public void createDummyPosts(int count) {
+        for (int i = 0; i <= count; i++) {
+            Post post = new Post(i + "번 제목", "게시물 내용 " + i);
+            postRepository.save(post);
+        }
+    }
+
 }
-
-
-
-
-
-
-

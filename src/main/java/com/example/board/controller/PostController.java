@@ -2,9 +2,12 @@ package com.example.board.controller;
 
 import com.example.board.dto.PostDto;
 import com.example.board.entity.Post;
-import com.example.board.repository.PostRepository;
 import com.example.board.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +26,25 @@ public class PostController {
 //    }
 
     @GetMapping
-    public String list(Model model) {
-        model.addAttribute("posts", postService.getAllPosts());
+    public String list(
+        @PageableDefault(
+            size = 20,
+            sort = "id",
+            direction = Direction.DESC
+        ) Pageable pageable,
+        Model model
+    ) {
+//        model.addAttribute("posts", postService.getAllPosts());
+        Page<Post> postPage = postService.getPostsPage(pageable);
+        model.addAttribute("posts", postPage.getContent());
         return "posts/list";
     }
 
     @GetMapping("/{id}")
-    public String detail(@PathVariable Long id, Model model) {
+    public String detail(
+        @PathVariable Long id,
+        Model model
+    ) {
         Post post = postService.getPostById(id);
         model.addAttribute("post", post);
         return "posts/detail";
@@ -43,13 +58,22 @@ public class PostController {
 
     @PostMapping
     public String create(@ModelAttribute Post post) {
-        // Post post = new Post("hi", "hello");
+        /*
+        @ModelAttribute
+        - 내부적으로 Post 엔티티 객체를 생성
+        - Post post = new Post("hi", "hello");
+        - 사용자가 입력한 HTML의 title과 content를 Post 객체의 title과 content에 매핑
+        - 이후 아래의 코드를 실행
+         */
         postService.createPost(post);
         return "redirect:/posts";
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(@PathVariable Long id, Model model) {
+    public String edit(
+        @PathVariable Long id,
+        Model model
+    ) {
         Post post = postService.getPostById(id);
         model.addAttribute("post", post);
         return "posts/form";
@@ -58,7 +82,8 @@ public class PostController {
     @PostMapping("/{id}")
     public String update(
             @PathVariable Long id,
-            @ModelAttribute Post post) {
+            @ModelAttribute Post post
+    ) {
         postService.updatePost(id, post);
         return "redirect:/posts/" + id;
     }
@@ -88,7 +113,10 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    public String search(@RequestParam String keyword, Model model) {
+    public String search(
+        @RequestParam String keyword,
+        Model model
+    ) {
         List<Post> posts = postService.searchPostsByTitleOrContent(keyword);
         model.addAttribute("posts", posts);
         return "posts/list";
@@ -100,6 +128,12 @@ public class PostController {
     public String recent(Model model) {
         model.addAttribute("posts", postService.getRecentPosts());
         return "posts/list";
+    }
+
+    @GetMapping("/dummy")
+    public String dummy() {
+        postService.createDummyPosts(100);
+        return "redirect:/posts";
     }
 
 }
