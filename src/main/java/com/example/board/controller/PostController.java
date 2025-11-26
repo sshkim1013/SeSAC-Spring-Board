@@ -56,7 +56,11 @@ public class PostController {
         Model model
     ) {
         Post post = postService.getPostById(id);
-        List<Comment> comments = commentService.getCommentsByPostId(id);
+        // 댓글을 기준으로 게시글에 접근하여 댓글 출력(Comment -> Post)
+        // List<Comment> comments = commentService.getCommentsByPostId(id);
+
+        // 게시글을 기준으로 댓글 출력(상위 -> 하위)
+        List<Comment> comments = post.getComments();
 
         model.addAttribute("comment", new CommentDto());
         model.addAttribute("post", post);
