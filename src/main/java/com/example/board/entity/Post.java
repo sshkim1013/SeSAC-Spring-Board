@@ -1,6 +1,8 @@
 package com.example.board.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +29,16 @@ public class Post {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    /*
+    * @OneToMany : 하나의 Post에 여러 개의 Comment
+    * mappedBy : 어느 엔티티가 이 관계에서 주인인지 설정
+        - 이 관계에서는 Post 엔티티가 주인이라는 의미
+    * mappedBy = "post" 에서 post는 Comment 객체의 post 필드를 의미
+        - (이름이 정확히 맞아야 한다)
+    */
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
+
     public Post(String title, String content) {
         this.title = title;
         this.content = content;
@@ -39,11 +51,3 @@ public class Post {
     }
 
 }
-
-
-
-
-
-
-
-
