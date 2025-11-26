@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY) // AUTO INCREAMENT
+    @GeneratedValue(strategy= GenerationType.IDENTITY) // AUTO INCREMENT
     private Long id;
 
     @Column(nullable = false, length = 100) // NOT NULL, VARCHAR(100)
