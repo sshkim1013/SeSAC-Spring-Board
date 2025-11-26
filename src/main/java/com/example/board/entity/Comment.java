@@ -1,6 +1,5 @@
-package com.example.comment.entity;
+package com.example.board.entity;
 
-import com.example.board.entity.Post;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

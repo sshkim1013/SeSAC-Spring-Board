@@ -3,6 +3,10 @@ package com.example.board.controller;
 import com.example.board.dto.PostDto;
 import com.example.board.entity.Post;
 import com.example.board.service.PostService;
+import com.example.board.dto.CommentDto;
+import com.example.board.entity.Comment;
+import com.example.board.service.CommentService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
+    private final CommentService commentService;
 
     @GetMapping
     public String list(
@@ -51,7 +56,11 @@ public class PostController {
         Model model
     ) {
         Post post = postService.getPostById(id);
+        List<Comment> comments = commentService.getCommentsByPostId(id);
+
+        model.addAttribute("comment", new CommentDto());
         model.addAttribute("post", post);
+        model.addAttribute("comments", comments);
         return "posts/detail";
     }
 
@@ -160,6 +169,33 @@ public class PostController {
         Slice<Post> postSlice = postService.getPostsSlice(pageable);
         model.addAttribute("postSlice", postSlice);
         return "posts/list-more";
+    }
+
+    // --------------- Comment Part ---------------
+
+    @PostMapping("/{postId}/comments")
+    public String createComment(
+        @PathVariable Long postId,
+        @ModelAttribute Comment comment
+    ) {
+        /*
+        @ModelAttribute
+        - 내부적으로 Comment 엔티티 객체를 생성
+        - 사용자가 입력한 HTML의 title과 content를 Comment 객체의 title과 content에 매핑
+        - 이후 아래의 코드를 실행
+         */
+
+        commentService.createComment(postId, comment);
+        return "redirect:/posts/" + postId;
+    }
+
+    @PostMapping("/{postId}/comments/{commentId}/delete")
+    public String deleteComment(
+        @PathVariable Long postId,
+        @PathVariable Long commentId
+    ) {
+        commentService.deleteComment(commentId);
+        return "redirect:/posts/" + postId;
     }
 
 }

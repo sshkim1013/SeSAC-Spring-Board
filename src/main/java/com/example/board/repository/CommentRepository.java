@@ -1,11 +1,14 @@
-package com.example.comment.repository;
+package com.example.board.repository;
 
-import com.example.comment.entity.Comment;
+import com.example.board.entity.Comment;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
+
+    List<Comment> findByPostId(Long postId);
 
 
 
