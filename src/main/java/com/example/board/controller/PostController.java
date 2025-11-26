@@ -176,7 +176,7 @@ public class PostController {
         return "posts/list-more";
     }
 
-    // --------------- Comment Part ---------------
+    // =============== [ Comment Part ] ===============
 
     @PostMapping("/{postId}/comments")
     public String createComment(
@@ -188,8 +188,7 @@ public class PostController {
         - 내부적으로 Comment 엔티티 객체를 생성
         - 사용자가 입력한 HTML의 title과 content를 Comment 객체의 title과 content에 매핑
         - 이후 아래의 코드를 실행
-         */
-
+        */
         commentService.createComment(postId, comment);
         return "redirect:/posts/" + postId;
     }
@@ -216,4 +215,5 @@ public class PostController {
         model.addAttribute("posts", posts);
         return "posts/list-test";
     }
+
 }

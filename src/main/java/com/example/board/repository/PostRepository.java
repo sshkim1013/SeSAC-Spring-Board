@@ -98,18 +98,18 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Slice<Post> findAllBy(Pageable pageable);
 
     /*
-    게시글을 조회할 때 댓글도 함께 조회하기 위함
-    - N+1 문제 방지
-    - FETCH의 의미:
+    * 게시글을 조회할 때 댓글도 함께 조회하기 위함 (N+1 문제 방지)
+    * FETCH의 의미: Post 엔티티를 조회할 때 연관된 컬렉션인 comments를
+    *               한 번의 쿼리에서 함께 조회하여 N+1 문제를 방지한다.
     */
     @Query("SELECT DISTINCT p FROM Post p LEFT JOIN FETCH p.comments")
     List<Post> findAllWithComments();
 
     /*
-     * attributePaths = {"comments"}: Post 엔티티의 comments 컬렉션을
-     *      조회 시 즉시 로딩(fetch)하도록 JPA에 지시
-     * 결과 리스트에서 엔티티 중복이 생길 수 있는데, JPA가 자동으로 DISTINCT 처리
-     */
+    * attributePaths = {"comments"}: Post 엔티티의 comments 컬렉션을
+    *      조회 시 즉시 로딩(fetch)하도록 JPA에 지시
+    * 결과 리스트에서 엔티티 중복이 생길 수 있는데, JPA가 자동으로 DISTINCT 처리
+    */
     @EntityGraph(attributePaths = {"comments"})
     @Query("SELECT p FROM Post p")
     List<Post> findAllWithCommentsEntityGraph();
