@@ -31,7 +31,6 @@ public class PostService {
                 .orElseThrow(() -> new RuntimeException("post not found"));
     }
 
-
     public List<Post> getAllPosts() {
         // return postRepository.findAll(
         //         Sort.by(Sort.Direction.DESC, "id")
@@ -135,4 +134,5 @@ public class PostService {
     public List<Post> getAllPostsWithEntityGraph() {
         return postRepository.findAllWithCommentsEntityGraph();
     }
+
 }
