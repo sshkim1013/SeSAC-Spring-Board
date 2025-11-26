@@ -18,14 +18,23 @@ public class CommentService {
 
     @Transactional
     public Comment createComment(Long postId, Comment comment) {
-
         /*
-        - Comment를 생성하기 위해서는 Post가 필요
-        - 특정 id의 Post 가져오기
-         */
+        * Comment를 생성하기 위해서는 Post가 필요
+        * 특정 id의 Post 가져오기
+        */
         Post post = postService.getPostById(postId);
-        comment.setPost(post);
-        return commentRepository.save(comment);
+
+        System.out.println("===== 댓글 추가 전 =====");
+        System.out.println("댓글 수 : " + post.getComments().size());
+
+        // comment.setPost(post);
+        post.addComment(comment);
+        Comment saved = commentRepository.save(comment);
+
+        System.out.println("===== 댓글 추가 후 =====");
+        System.out.println("댓글 수 : " + post.getComments().size());
+
+        return saved;
     }
 
     // 게시글 ID로 특정 게시글의 모든 댓글 조회
@@ -35,7 +44,13 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(Long commentId) {
-        Comment foundComment = commentRepository.findById(commentId).orElseThrow();
+        Comment foundComment = commentRepository.findById(commentId)
+            .orElseThrow();
+
+        // // 고아 객체 방식을 통한 삭제
+        // Post post = foundComment.getPost();
+        // post.removeComment(foundComment);
+
         commentRepository.delete(foundComment);
     }
 

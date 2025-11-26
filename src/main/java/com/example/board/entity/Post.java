@@ -35,8 +35,13 @@ public class Post {
         - 이 관계에서는 Post 엔티티가 주인이라는 의미
     * mappedBy = "post" 에서 post는 Comment 객체의 post 필드를 의미
         - (이름이 정확히 맞아야 한다)
+    * cascade : 부모의 상태에 따른 자식의 상태를 설정
+        - CascadeType.REMOVE : 부모(Post)가 삭제 되면 자식(Comment)도 삭제
     */
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post",
+        cascade = CascadeType.REMOVE,
+        orphanRemoval = true    // 부모(Post)와 연결이 끊긴 Comment(고아 객체)를 자동으로 DELETE
+    )
     private List<Comment> comments = new ArrayList<>();
 
     public Post(String title, String content) {
@@ -48,6 +53,16 @@ public class Post {
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.setPost(this);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+        comment.setPost(null);
     }
 
 }
