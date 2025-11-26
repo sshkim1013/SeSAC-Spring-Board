@@ -106,9 +106,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllWithComments();
 
     /*
-    *
-    * 자동으로 DISTINCT 처리
-    */
+     * attributePaths = {"comments"}: Post 엔티티의 comments 컬렉션을
+     *      조회 시 즉시 로딩(fetch)하도록 JPA에 지시
+     * 결과 리스트에서 엔티티 중복이 생길 수 있는데, JPA가 자동으로 DISTINCT 처리
+     */
     @EntityGraph(attributePaths = {"comments"})
     @Query("SELECT p FROM Post p")
     List<Post> findAllWithCommentsEntityGraph();
